@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Calendar from "./components/calendar/Calendar";
 import HeroImage from "./components/layout/HeroImage";
@@ -15,6 +15,29 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
+
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      if (dx < 0) goNextMonth();
+      else goPreviousMonth();
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -68,8 +91,15 @@ export default function App() {
   return (
     <div
       className="min-h-screen p-4 md:p-8 bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex items-start justify-center transition-colors duration-300"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onClick={(e) => {
+        if (!e.target.closest('.calendar-container')) {
+          setSelectedRange(null);
+        }
+      }}
     >
-      <div className="w-full max-w-3xl relative">
+      <div className="w-full max-w-3xl relative calendar-container">
 
         <div className="absolute -top-1 right-0 z-10">
           <button

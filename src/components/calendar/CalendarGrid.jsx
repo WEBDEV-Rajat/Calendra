@@ -9,26 +9,6 @@ export default function CalendarGrid({ currentDate, range, notes }) {
   const days = eachDayOfInterval({ start, end });
   const currentMonth = currentDate.getMonth();
 
-  const findDateFromPoint = (x, y) => {
-    const element = document.elementFromPoint(x, y);
-    const dayElement = element?.closest("[data-date]");
-    if (!dayElement) return null;
-    return new Date(dayElement.dataset.date);
-  };
-
-  const handleTouchMove = (event) => {
-    if (!range.isDragging) return;
-    const touch = event.touches[0];
-    const date = findDateFromPoint(touch.clientX, touch.clientY);
-    if (date) range.handleMouseEnter(date);
-  };
-
-  const handlePointerMove = (event) => {
-    if (!range.isDragging) return;
-    const date = findDateFromPoint(event.clientX, event.clientY);
-    if (date) range.handleMouseEnter(date);
-  };
-
   return (
     <>
       <div className="grid grid-cols-7 gap-2 mb-2 text-xs font-semibold uppercase tracking-wide">
@@ -43,9 +23,6 @@ export default function CalendarGrid({ currentDate, range, notes }) {
       </div>
       <div
         className="grid grid-cols-7 gap-2"
-        onTouchMove={handleTouchMove}
-        onPointerMove={handlePointerMove}
-        style={{ touchAction: "none" }}
       >
         {days.map((day) => (
           <DayCell

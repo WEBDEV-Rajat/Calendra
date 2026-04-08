@@ -22,12 +22,6 @@ export default function InsightsPanel({ selectedRange, notes, currentDate }) {
       <div className="space-y-1 text-sm text-slate-600 dark:text-slate-300">
         <div>{selectedDays} days selected</div>
         <div>{monthNotes.length} notes this month</div>
-        {selectedRange?.startDate && (
-          <div>
-            {format(new Date(selectedRange.startDate), "MMM d")} –{" "}
-            {format(new Date(selectedRange.endDate), "MMM d")}
-          </div>
-        )}
       </div>
     </div>
   );

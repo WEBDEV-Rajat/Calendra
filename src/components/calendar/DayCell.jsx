@@ -5,9 +5,7 @@ export default function DayCell({
   day,
   startDate,
   endDate,
-  handleMouseDown,
-  handleMouseEnter,
-  handleMouseUp,
+  handleClick,
   isInRange,
   notes,
   isCurrentMonth,
@@ -34,24 +32,16 @@ export default function DayCell({
   return (
     <motion.div
       whileTap={{ scale: 0.9 }}
-      data-date={day.toISOString()}
-      onMouseDown={() => handleMouseDown(day)}
-      onMouseEnter={() => handleMouseEnter(day)}
-      onMouseUp={handleMouseUp}
-      onPointerDown={() => handleMouseDown(day)}
-      onPointerEnter={() => handleMouseEnter(day)}
-      onPointerUp={handleMouseUp}
-      onTouchStart={() => handleMouseDown(day)}
-      onTouchEnd={handleMouseUp}
-      style={{ touchAction: "none" }}
-      className={`p-2 text-center rounded-lg cursor-pointer select-none relative transition-colors duration-200
+      data-date={day.getTime()}
+      onClick={() => handleClick(day)}
+      className={`day-cell p-2 text-center rounded-lg cursor-pointer select-none relative transition-colors duration-200
         bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100
         ${!isCurrentMonth ? "opacity-40" : ""}
         ${isSunday ? "text-red-500 dark:text-red-400" : ""}
-        ${isSingleSelected ? "font-bold ring-2 ring-blue-500" : ""}
-        ${isStart && !isSingleSelected ? "font-bold border-2 border-blue-500 shadow-lg" : ""}
-        ${isEnd ? "font-bold border-2 border-blue-500 shadow-lg" : ""}
-        ${inRange && !isStart && !isEnd ? "border border-blue-300 dark:border-blue-600" : ""}
+        ${isSingleSelected ? "bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-white ring-2 ring-blue-500" : ""}
+        ${isStart && !isSingleSelected ? "bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-white font-bold border-2 border-blue-500 shadow-lg" : ""}
+        ${isEnd ? "bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-white font-bold border-2 border-blue-500 shadow-lg" : ""}
+        ${inRange && !isStart && !isEnd ? "bg-blue-50 dark:bg-slate-700 border border-blue-200 dark:border-blue-600" : ""}
         ${!inRange && !isStart && !isEnd ? "hover:bg-slate-100 dark:hover:bg-slate-600" : ""}
         ${today ? "ring-2 ring-red-400" : ""}
       `}
